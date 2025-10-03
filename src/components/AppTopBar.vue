@@ -8,7 +8,6 @@
 
     <v-spacer />
 
-    <!-- Gallery / Home button on the right -->
     <v-btn
       icon
       variant="text"
@@ -21,6 +20,4 @@
   </v-app-bar>
 </template>
 
-<script setup>
-// no script needed
-</script>
+<script setup></script>
