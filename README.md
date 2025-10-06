@@ -1,79 +1,249 @@
-# Vuetify (Default)
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
+# Voice for Nature — Wadden (Frontend)
 
-## ❗️ Important Links
+A Vue 3 + Vuetify 3 single-page app (SPA) that lets users “meet” Wadden Sea ecosystem elements (e.g., seagrass) through full-bleed, image-driven pages. The current prototype focuses on a clean, scalable front-end with two layout “frames,” a gallery landing page, and per-element pages. AI/chat will be added later.
 
-- 📄 [Docs](https://vuetifyjs.com/)
-- 🚨 [Issues](https://issues.vuetifyjs.com/)
-- 🏬 [Store](https://store.vuetifyjs.com/)
-- 🎮 [Playground](https://play.vuetifyjs.com/)
-- 💬 [Discord](https://community.vuetifyjs.com)
+---
 
-## 💿 Install
+## Tech stack
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
+* Vue 3 (Composition API, `<script setup>`)
+* Vuetify 3 (UI framework)
+* Vite (dev server & bundler)
+* Vue Router + file-based routes (`unplugin-vue-router`)
+* Layouts (`vite-plugin-vue-layouts`)
+* Pinia (wired; reserved for future state)
 
-| Package Manager                                                | Command        |
-|---------------------------------------------------------------|----------------|
-| [yarn](https://yarnpkg.com/getting-started)                   | `yarn install` |
-| [npm](https://docs.npmjs.com/cli/v7/commands/npm-install)     | `npm install`  |
-| [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
-| [bun](https://bun.sh/#getting-started)                        | `bun install`  |
+---
 
-After completing the installation, your environment is ready for Vuetify development.
+## Quick start
 
-## ✨ Features
+<pre class="overflow-visible!" data-start="675" data-end="854"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-bash"><span><span># install deps</span><span>
+npm install
 
-- 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
-- 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
-- 🚦 **Routing and Layouts**: Utilizes Vue Router for SPA navigation and vite-plugin-vue-layouts for organizing Vue file layouts. [Vue Router](https://router.vuejs.org/) | [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
-- ⚡ **Next-Gen Tooling**: Powered by Vite, experience fast cold starts and instant HMR (Hot Module Replacement). [Vite](https://vitejs.dev/)
-- 🧩 **Automated Component Importing**: Streamline your workflow with unplugin-vue-components, automatically importing components as you use them. [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
+</span><span># run dev server (Vite will print the local URL)</span><span>
+npm run dev
 
-These features are curated to provide a seamless development experience from setup to deployment, ensuring that your Vuetify application is both powerful and maintainable.
+</span><span># production build</span><span>
+npm run build
 
-## 💡 Usage
+</span><span># preview built app locally</span><span>
+npm run preview
+</span></span></code></div></div></pre>
 
-This section covers how to start the development server and build your project for production.
+---
 
-### Starting the Development Server
+## Project structure
 
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
+<pre class="overflow-visible!" data-start="1015" data-end="2040"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>project/
+├─ </span><span>public</span><span>/
+│  └─ bg/                       </span><span># full-bleed background images (served as /bg/…)</span><span>
+├─ src/
+│  ├─ App.vue                   </span><span># single <v-app> + <router-view/></span><span>
+│  ├─ main.js                   </span><span># boot, plugins, mount</span><span>
+│  ├─ plugins/
+│  │  ├─ index.js               </span><span># registers router, pinia, vuetify</span><span>
+│  │  └─ vuetify.js             </span><span># Vuetify setup (theme/components)</span><span>
+│  ├─ router/
+│  │  └─ index.js               </span><span># createRouter + file-based routes + layouts</span><span>
+│  ├─ layouts/
+│  │  ├─ </span><span>default</span><span>.vue            </span><span># app-bar layout (top bar)</span><span>
+│  │  └─ FullBleedLayout.vue    </span><span># chrome-less layout (edge-to-edge content)</span><span>
+│  ├─ components/
+│  │  └─ AppTopBar.vue          </span><span># simple <v-app-bar> with a Home/Gallery button</span><span>
+│  ├─ pages/
+│  │  ├─ index.vue              </span><span># landing "gallery" over WaddenSea background</span><span>
+│  │  └─ seagrass.vue           </span><span># per-ecosystem page (seagrass)</span><span>
+│  ├─ stores/                   </span><span># Pinia (future global state)</span><span>
+│  └─ styles/                   </span><span># (optional) global styles, if needed</span><span>
+└─ README.md
+</span></span></code></div></div></pre>
 
-```bash
-yarn dev
-```
+---
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+## How routing & layouts work
 
-> Add NODE_OPTIONS='--no-warnings' to suppress the JSON import warnings that happen as part of the Vuetify import mapping. If you are on Node [v21.3.0](https://nodejs.org/en/blog/release/v21.3.0) or higher, you can change this to NODE_OPTIONS='--disable-warning=5401'. If you don't mind the warning, you can remove this from your package.json dev script.
+This project uses **file-based routing** and  **automatic layouts** :
 
-### Building for Production
+* Routes are generated from `src/pages/*.vue` by `unplugin-vue-router`.
+* A page declares its route & layout via the `definePage()` macro:
+  <pre class="overflow-visible!" data-start="2288" data-end="2435"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-js"><span><span>definePage</span><span>({
+    </span><span>name</span><span>: </span><span>'seagrass'</span><span>,
+    </span><span>path</span><span>: </span><span>'/seagrass'</span><span>,
+    </span><span>meta</span><span>: { </span><span>layout</span><span>: </span><span>'default'</span><span> }, </span><span>// wraps with src/layouts/default.vue</span><span>
+  })
+  </span></span></code></div></div></pre>
+* Layouts are ordinary Vue components in `src/layouts/`. The layouts plugin wraps pages automatically, and **the layout component must render `<RouterView/>`** in its template to show the page.
 
-To build your project for production, use:
+**App-level rule:** there must be exactly **one** `<v-app>` (Vuetify root) in the app, provided by `src/App.vue`. Layouts must *not* include `<v-app>`.
 
-```bash
-yarn build
-```
+---
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+## Current pages & layouts
 
-Once the build process is completed, your application will be ready for deployment in a production environment.
+### 1) `pages/index.vue` — Landing “Gallery”
 
-## 💪 Support Vuetify Development
+* **Layout:** `FullBleedLayout` (edge-to-edge canvas, no top bar).
+* **Background:** `public/bg/waddensea.jpg`, applied with:
+  <pre class="overflow-visible!" data-start="2990" data-end="3063"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-js"><span><span>const</span><span> bgUrl = </span><span>import</span><span>.</span><span>meta</span><span>.</span><span>env</span><span>.</span><span>BASE_URL</span><span> + </span><span>'bg/waddensea.jpg'</span><span>
+  </span></span></code></div></div></pre>
+* **Content:** a gallery overlay (`<v-item-group>`) of tiles. Each tile:
+  * Displays a preview image (from `public/bg/...`)
+  * Has a **ring** around it (`.ring-wrap`) to float over the background
+  * Navigates to the target page on click
 
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
+Key snippet:
 
-- [Requesting Enterprise Support](https://support.vuetifyjs.com/)
-- [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
-- [Sponsoring Kael on Github](https://github.com/users/kaelwd/sponsorship)
-- [Supporting the team on Open Collective](https://opencollective.com/vuetify)
-- [Becoming a sponsor on Patreon](https://www.patreon.com/vuetify)
-- [Becoming a subscriber on Tidelift](https://tidelift.com/subscription/npm/vuetify)
-- [Making a one-time donation with Paypal](https://paypal.me/vuetify)
+<pre class="overflow-visible!" data-start="3318" data-end="3970"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-html"><span><span><v-item-group</span><span></span><span>v-model</span><span>=</span><span>"selected"</span><span></span><span>class</span><span>=</span><span>"gallery-overlay"</span><span></span><span>mandatory</span><span>>
+  </span><span><v-container</span><span></span><span>class</span><span>=</span><span>"py-12"</span><span>>
+    </span><span><v-row</span><span></span><span>dense</span><span>>
+      </span><span><v-col</span><span></span><span>v-for</span><span>=</span><span>"item in items"</span><span></span><span>:key</span><span>=</span><span>"item.id"</span><span></span><span>cols</span><span>=</span><span>"12"</span><span></span><span>sm</span><span>=</span><span>"6"</span><span></span><span>md</span><span>=</span><span>"4"</span><span></span><span>lg</span><span>=</span><span>"3"</span><span>>
+        </span><span><v-item</span><span></span><span>:value</span><span>=</span><span>"item.id"</span><span></span><span>v-slot</span><span>=</span><span>"{ toggle }"</span><span>>
+          </span><span><div</span><span></span><span>class</span><span>=</span><span>"ring-wrap"</span><span>>
+            </span><span><v-card</span><span></span><span>elevation</span><span>=</span><span>"8"</span><span></span><span>class</span><span>=</span><span>"gallery-card"</span><span> @</span><span>click</span><span>=</span><span>"() => { toggle(); go(item) }"</span><span>>
+              </span><span><v-img</span><span></span><span>:src</span><span>=</span><span>"item.img"</span><span></span><span>height</span><span>=</span><span>"180"</span><span></span><span>cover</span><span>>
+                </span><span><div</span><span></span><span>class</span><span>=</span><span>"card-title"</span><span>>{{ item.title }}</span><span></div</span><span>>
+              </span><span></v-img</span><span>>
+            </span><span></v-card</span><span>>
+          </span><span></div</span><span>>
+        </span><span></v-item</span><span>>
+      </span><span></v-col</span><span>>
+    </span><span></v-row</span><span>>
+  </span><span></v-container</span><span>>
+</span><span></v-item-group</span><span>>
+</span></span></code></div></div></pre>
 
-## 📑 License
-[MIT](http://opensource.org/licenses/MIT)
+**The ring effect** (outside the image) is a spread `box-shadow` on `.ring-wrap`:
 
-Copyright (c) 2016-present Vuetify, LLC
+<pre class="overflow-visible!" data-start="4054" data-end="4363"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-css"><span><span>.ring-wrap</span><span> {
+  </span><span>border-radius</span><span>: </span><span>14px</span><span>;
+  </span><span>box-shadow</span><span>: </span><span>0</span><span></span><span>0</span><span></span><span>10px</span><span></span><span>16px</span><span></span><span>rgba</span><span>(</span><span>0</span><span>,</span><span>0</span><span>,</span><span>0</span><span>,.</span><span>6</span><span>), </span><span>0</span><span></span><span>12px</span><span></span><span>28px</span><span></span><span>rgba</span><span>(</span><span>0</span><span>,</span><span>0</span><span>,</span><span>0</span><span>,.</span><span>35</span><span>);
+  </span><span>transition</span><span>: box-shadow .</span><span>18s</span><span> ease, transform .</span><span>18s</span><span> ease;
+}
+</span><span>.ring-wrap</span><span>:hover</span><span> {
+  </span><span>box-shadow</span><span>: </span><span>0</span><span></span><span>0</span><span></span><span>10px</span><span></span><span>20px</span><span></span><span>rgba</span><span>(</span><span>255</span><span>,</span><span>255</span><span>,</span><span>255</span><span>,.</span><span>6</span><span>), </span><span>0</span><span></span><span>18px</span><span></span><span>36px</span><span></span><span>rgba</span><span>(</span><span>0</span><span>,</span><span>0</span><span>,</span><span>0</span><span>,.</span><span>45</span><span>);
+  </span><span>transform</span><span>: </span><span>translateY</span><span>(-</span><span>2px</span><span>);
+}
+</span></span></code></div></div></pre>
+
+### 2) `pages/seagrass.vue` — Ecosystem page (Seagrass)
+
+* **Layout:** `default` (top bar visible).
+* **Background:** `public/bg/seagrass.jpg`, applied with the same pattern as above.
+* Intended to host the speech-bubble/chat content later.
+
+---
+
+## The app bar
+
+`layouts/default.vue` includes `AppTopBar.vue`, a simple Vuetify app bar with brand color `#141e95` and a right-side button that routes to `home`:
+
+<pre class="overflow-visible!" data-start="4775" data-end="5115"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-vue"><span><v-app-bar flat density="comfortable" :style="{ backgroundColor: '#141e95', color: 'white' }">
+  <v-app-bar-title>Voice for Nature – Wadden Sea</v-app-bar-title>
+  <v-spacer />
+  <v-btn icon variant="text" :to="{ name: 'home' }" aria-label="Open gallery" class="text-white">
+    <v-icon icon="mdi-grid" />
+  </v-btn>
+</v-app-bar>
+</span></code></div></div></pre>
+
+---
+
+## Background image pattern (consistency)
+
+All background images are referenced relative to the Vite base:
+
+<pre class="overflow-visible!" data-start="5229" data-end="5295"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-js"><span><span>const</span><span> bgUrl = </span><span>import</span><span>.</span><span>meta</span><span>.</span><span>env</span><span>.</span><span>BASE_URL</span><span> + </span><span>'bg/<file>.jpg'</span><span>
+</span></span></code></div></div></pre>
+
+…and applied via a full-viewport div:
+
+<pre class="overflow-visible!" data-start="5334" data-end="5419"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-html"><span><span><div</span><span></span><span>class</span><span>=</span><span>"scene"</span><span></span><span>:style</span><span>=</span><span>"{ backgroundImage: `url('${bgUrl}')` }"</span><span>></span><span></div</span><span>>
+</span></span></code></div></div></pre>
+
+<pre class="overflow-visible!" data-start="5420" data-end="5589"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-css"><span><span>.scene</span><span> {
+  </span><span>position</span><span>: fixed;
+  </span><span>top</span><span>: </span><span>0</span><span>; </span><span>right</span><span>: </span><span>0</span><span>; </span><span>bottom</span><span>: </span><span>0</span><span>; </span><span>left</span><span>: </span><span>0</span><span>;
+  </span><span>background-size</span><span>: cover;
+  </span><span>background-position</span><span>: center;
+  </span><span>background-repeat</span><span>: no-repeat;
+}
+</span></span></code></div></div></pre>
+
+**Why `public/bg/`?** Large, static assets don’t need bundling—placing them in `public/` keeps them accessible at `/bg/...` while letting app code remain cache-friendly and small.
+
+---
+
+## Adding a new ecosystem page
+
+1. **Add background + preview** to `public/bg/` (e.g., `shellfish.jpg`).
+2. **Create the page** `src/pages/shellfish.vue`:
+   <pre class="overflow-visible!" data-start="5936" data-end="6447"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-vue"><span><script setup>
+   definePage({
+     name: 'shellfish',
+     path: '/shellfish',
+     meta: { layout: 'default' }, // show app bar on ecosystem pages
+   })
+   const bgUrl = import.meta.env.BASE_URL + 'bg/shellfish.jpg'
+   </script>
+
+   <template>
+     <div class="scene" :style="{ backgroundImage: `url('${bgUrl}')` }"></div>
+   </template>
+
+   <style scoped>
+   .scene { position: fixed; inset: 0; background-size: cover; background-position: center; background-repeat: no-repeat; }
+   </style>
+   </span></code></div></div></pre>
+3. **Add a tile** to the gallery in `pages/index.vue`:
+   <pre class="overflow-visible!" data-start="6507" data-end="6752"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-js"><span><span>const</span><span> items = [
+     { </span><span>id</span><span>: </span><span>'seagrass'</span><span>,  </span><span>title</span><span>: </span><span>'Seagrass'</span><span>,  </span><span>img</span><span>: base + </span><span>'bg/seagrass.jpg'</span><span>,  </span><span>to</span><span>: { </span><span>name</span><span>: </span><span>'seagrass'</span><span> } },
+     { </span><span>id</span><span>: </span><span>'shellfish'</span><span>, </span><span>title</span><span>: </span><span>'Shellfish'</span><span>, </span><span>img</span><span>: base + </span><span>'bg/shellfish.jpg'</span><span>, </span><span>to</span><span>: { </span><span>name</span><span>: </span><span>'shellfish'</span><span> } },
+   ]
+   </span></span></code></div></div></pre>
+
+That’s it—routing and layouts are automatic.
+
+---
+
+## Conventions & guidelines
+
+* **One `<v-app>`** : only in `App.vue`. Layouts must not nest another `<v-app>`.
+* **Layouts** : must render `<RouterView/>` to display the wrapped page.
+* **Pages** : use `definePage({ name, path?, meta: { layout } })`.
+* **Styling** : prefer `scoped` styles; share small utilities via a global stylesheet if needed.
+* **Assets** :
+  * Backgrounds & large, static images → `public/bg/` then use `import.meta.env.BASE_URL + 'bg/...'`.
+  * If you need bundling/optimization per-component, import from `src/assets/…`.
+* **Icons** : import MDI font CSS once if not already present.
+* **State** : Pinia is registered; introduce stores when multiple components/pages share state (e.g., selected element, gallery data source).
+
+---
+
+## Dev notes & troubleshooting
+
+* **Hot reload & auto-routes** : The router is exposed to HMR in `router/index.js`:
+
+<pre class="overflow-visible!" data-start="7673" data-end="7738"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-js"><span><span>if</span><span> (</span><span>import</span><span>.</span><span>meta</span><span>.</span><span>hot</span><span>) </span><span>window</span><span>.</span><span>__VUE_ROUTER__</span><span> = router
+  </span></span></code></div></div></pre>
+
+  This reduces spurious HMR warnings during route generation.
+
+* **Dynamic import workaround** : The scaffold includes a reload path for transient “Failed to fetch dynamically imported module” issues during dev (see `router.onError`).
+* **First-load redirect** : The app currently shows a real home page (`/`). If you re-introduce an automatic redirect on `/`, prefer a router guard in `router/index.js` or a minimal `index.vue` with `router.replace()` in `onMounted`, and ensure styles compile cleanly on first mount.
+* **Sass** : Vuetify styles require Sass. If you ever see a request for raw `.sass` files in Network (e.g., `VApp.sass`), ensure `sass` is installed and Vuetify styles are imported once (either `import 'vuetify/styles'` or via a local SCSS entry).
+
+---
+
+## Roadmap (suggested)
+
+* Centralize “elements” data (id, title, image) in `src/data/elements.js` or a Pinia store.
+* Add left/right navigation arrows on ecosystem pages (prev/next by index).
+* Add the speech-bubble chat container (UI only for now).
+* Lazy-load background images; add small preview thumbs for faster first paint.
+
+---
+
+## License
+
+MIT (project code).
