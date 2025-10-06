@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 definePage({
@@ -51,16 +51,8 @@ const router = useRouter();
 const bgUrl = import.meta.env.BASE_URL + "bg/waddensea.jpg";
 const base = import.meta.env.BASE_URL;
 
-const items = [
-  {
-    id: "seagrass",
-    title: "Seagrass",
-    img: base + "bg/seagrass.jpg",
-    to: { name: "seagrass" }, // relies on named route
-  },
-];
-
-const selected = ref(items[0]?.id ?? null);
+const items = ref([]);
+const selected = ref(null);
 
 function go(item) {
   if (!item?.to) return;
