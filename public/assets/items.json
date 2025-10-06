@@ -1,0 +1,17 @@
+[
+  {
+    "id": "seagrass",
+    "title": "Seagrass",
+    "img": "bg/seagrass.jpg"
+  },
+  {
+    "id": "seal",
+    "title": "Seal",
+    "img": "bg/seal.jpg"
+  },
+  {
+    "id": "oyster",
+    "title": "Oyster",
+    "img": "bg/oyster.jpg"
+  }
+]
