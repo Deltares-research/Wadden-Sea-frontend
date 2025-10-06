@@ -3,7 +3,7 @@
 
   <v-item-group v-model="selected" class="gallery-overlay" mandatory>
     <v-container class="py-12">
-      <v-row dense>
+      <v-row>
         <v-col
           v-for="item in items"
           :key="item.id"
