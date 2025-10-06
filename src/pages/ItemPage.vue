@@ -1,8 +1,13 @@
 <template>
    <div class="scene" :style="{ backgroundImage: `url('${bgUrl}')` }"></div>
+   <div class="chat-container">
+    <ChatComponent />
+   </div>
+   
 </template>
 
 <script setup>
+import ChatComponent from '@/components/ChatComponent.vue';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -33,5 +38,13 @@ onMounted(async () => {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.chat-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 </style>
