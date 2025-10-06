@@ -48,15 +48,27 @@ definePage({
 
 const router = useRouter();
 
-const bgUrl = import.meta.env.BASE_URL + "bg/waddensea.jpg";
 const base = import.meta.env.BASE_URL;
+const bgUrl = base + "bg/waddensea.jpg";
+const assets =  base + "assets/";
 
 const items = ref([]);
 const selected = ref(null);
 
+onMounted(async () => {
+  const res = await fetch(assets + "items.json");
+  const data = await res.json();
+  // Prepend BASE_URL to image paths
+  items.value = data.map(item => ({
+    ...item,
+    img: base + item.img
+  }));
+  selected.value = items.value[0]?.id ?? null;
+});
+
 function go(item) {
-  if (!item?.to) return;
-  router.push(item.to);
+  if (!item?.id) return;
+  router.push(item.id);
 }
 </script>
 
