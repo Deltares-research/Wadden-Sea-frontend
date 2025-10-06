@@ -38,10 +38,23 @@ onMounted(async () => {
 }
 
 .chat-container {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  pointer-events: none;
 }
+
+/* Make the chat window larger using dynamic units */
+/* .chat-container :deep(.deep-chat) {
+  width: 80vw;
+  height: 80vh;
+  min-width: 400px;
+  min-height: 400px;
+  max-width: 1200px;
+  max-height: 900px;
+  pointer-events: auto;
+} */
+
 </style>
