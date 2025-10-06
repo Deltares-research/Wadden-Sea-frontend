@@ -41,16 +41,11 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
-definePage({
-  name: "home",
-  meta: { layout: "FullBleedLayout" },
-});
-
 const router = useRouter();
 
 const base = import.meta.env.BASE_URL;
 const bgUrl = base + "bg/waddensea.jpg";
-const assets =  base + "assets/";
+const assets = base + "assets/";
 
 const items = ref([]);
 const selected = ref(null);
@@ -59,9 +54,9 @@ onMounted(async () => {
   const res = await fetch(assets + "items.json");
   const data = await res.json();
   // Prepend BASE_URL to image paths
-  items.value = data.map(item => ({
+  items.value = data.map((item) => ({
     ...item,
-    img: base + item.img
+    img: base + item.img,
   }));
   selected.value = items.value[0]?.id ?? null;
 });
