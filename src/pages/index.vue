@@ -1,17 +1,121 @@
 <template>
-  <v-container class="py-12">
-    <h1 class="text-h4 mb-4">Voice for Nature – Wadden</h1>
-    <p class="mb-6">
-      Welcome! This is the temporary home page. Click below to view the
-      Seagrass.
-    </p>
-    <v-btn color="primary" :to="{ name: 'seagrass' }">Go to Seagrass</v-btn>
-  </v-container>
+  <div class="scene" :style="{ backgroundImage: `url('${bgUrl}')` }"></div>
+
+  <v-item-group v-model="selected" class="gallery-overlay" mandatory>
+    <v-container class="py-12">
+      <v-row dense>
+        <v-col
+          v-for="item in items"
+          :key="item.id"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
+        >
+          <v-item :value="item.id" v-slot="{ isSelected, toggle }">
+            <div class="ring-wrap">
+              <v-card
+                elevation="8"
+                class="gallery-card"
+                @click="
+                  () => {
+                    toggle();
+                    go(item);
+                  }
+                "
+              >
+                <v-img :src="item.img" height="180" cover>
+                  <template #sources />
+                  <div class="card-title">{{ item.title }}</div>
+                </v-img>
+              </v-card>
+            </div>
+          </v-item>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-item-group>
 </template>
 
 <script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
 definePage({
   name: "home",
   meta: { layout: "FullBleedLayout" },
 });
+
+const router = useRouter();
+
+const bgUrl = import.meta.env.BASE_URL + "bg/waddensea.jpg";
+const base = import.meta.env.BASE_URL;
+
+const items = [
+  {
+    id: "seagrass",
+    title: "Seagrass",
+    img: base + "bg/seagrass.jpg",
+    to: { name: "seagrass" }, // relies on named route
+  },
+];
+
+const selected = ref(items[0]?.id ?? null);
+
+function go(item) {
+  if (!item?.to) return;
+  router.push(item.to);
+}
 </script>
+
+<style scoped>
+.scene {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gallery-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+.ring-wrap {
+  border-radius: 14px;
+
+  box-shadow: 0 0 10px 16px rgba(0, 0, 0, 0.6), 0 12px 28px rgba(0, 0, 0, 0.35);
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.ring-wrap:hover {
+  box-shadow: 0 0 10px 20px rgba(255, 255, 255, 0.6),
+    0 18px 36px rgba(0, 0, 0, 0.45);
+  transform: translateY(-2px);
+}
+
+.gallery-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.gallery-card :deep(.v-img) {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px 12px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+}
+</style>
