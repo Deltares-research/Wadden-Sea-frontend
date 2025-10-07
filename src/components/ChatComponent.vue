@@ -19,7 +19,7 @@
   import 'deep-chat'
   import { ref } from 'vue'
   import { useRoute } from 'vue-router'
-  const route = useRoute();
+  // const route = useRoute();
 
   const history = ref([
     {role: "ai", text: "Hello! I'm a "}
