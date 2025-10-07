@@ -1,28 +1,27 @@
 <template>
-   <div class="scene" :style="{ backgroundImage: `url('${bgUrl}')` }"></div>
-   <div class="chat-container">
+  <div class="scene" :style="{ backgroundImage: `url('${bgUrl}')` }" />
+  <div class="chat-container">
     <ChatComponent />
-   </div>
-   
+  </div>
 </template>
 
 <script setup>
-import ChatComponent from '@/components/ChatComponent.vue';
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+  import ChatComponent from '@/components/ChatComponent.vue';
+  import { ref, onMounted } from 'vue';
+  import { useRoute } from 'vue-router';
 
-const route = useRoute();
-const item = ref(null);
-const bgUrl = ref("");
+  const route = useRoute();
+  const item = ref(null);
+  const bgUrl = ref("");
 
-onMounted(async () => {
-  const res = await fetch(import.meta.env.BASE_URL + "assets/items.json");
-  const items = await res.json();
-  item.value = items.find((i) => i.id === route.params.id);
-  if (item.value) {
-    bgUrl.value = import.meta.env.BASE_URL + item.value.img;
-  }
-});
+  onMounted(async () => {
+    const res = await fetch(import.meta.env.BASE_URL + "assets/items.json");
+    const items = await res.json();
+    item.value = items.find((i) => i.id === route.params.id);
+    if (item.value) {
+      bgUrl.value = import.meta.env.BASE_URL + item.value.img;
+    }
+  });
 </script>
 
 <style scoped>
@@ -45,16 +44,4 @@ onMounted(async () => {
   align-items: center;
   pointer-events: none;
 }
-
-/* Make the chat window larger using dynamic units */
-/* .chat-container :deep(.deep-chat) {
-  width: 80vw;
-  height: 80vh;
-  min-width: 400px;
-  min-height: 400px;
-  max-width: 1200px;
-  max-height: 900px;
-  pointer-events: auto;
-} */
-
 </style>
