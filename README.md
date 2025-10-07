@@ -72,14 +72,6 @@ This project uses **file-based routing** and **automatic layouts** :
 
 * Routes are generated from `src/pages/*.vue` by `unplugin-vue-router`.
 * Dynamic ecosystem pages are handled by `ItemPage.vue` and a dynamic route (`/item/:id`).
-* A page declares its layout via the `definePage()` macro:
-  ```js
-  definePage({
-    name: 'item',
-    path: '/item/:id',
-    meta: { layout: 'default' }, // wraps with src/layouts/default.vue
-  })
-  ```
 * Layouts are ordinary Vue components in `src/layouts/`. The layouts plugin wraps pages automatically, and **the layout component must render `<RouterView/>`** in its template to show the page.
 
 **App-level rule:** there must be exactly **one** `<v-app>` (Vuetify root) in the app, provided by `src/App.vue`. Layouts must *not* include `<v-app>`.
