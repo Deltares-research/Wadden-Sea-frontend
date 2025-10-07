@@ -9,15 +9,23 @@
   import ChatComponent from '@/components/ChatComponent.vue';
   import { ref, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
+  import { useAppStore } from '@/stores/app'
+  
+  defineProps({
+    id: {
+      type: String,
+      required: true,
+    }
+  })
 
   const route = useRoute();
   const item = ref(null);
   const bgUrl = ref("");
 
   onMounted(async () => {
-    const res = await fetch(import.meta.env.BASE_URL + "assets/items.json");
-    const items = await res.json();
-    item.value = items.find((i) => i.id === route.params.id);
+    const appStore = useAppStore()
+    await appStore.loadItems()
+    item.value = appStore.items.find((i) => i.id === route.params.id);
     if (item.value) {
       bgUrl.value = import.meta.env.BASE_URL + item.value.img;
     }
