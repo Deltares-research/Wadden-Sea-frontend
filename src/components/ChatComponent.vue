@@ -16,14 +16,26 @@
 </template>
 
 <script setup>
-  import 'deep-chat'
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
-  // const route = useRoute();
+  import { useAppStore } from '@/stores/app';
+  import 'deep-chat'
 
-  const history = ref([
-    {role: "ai", text: "Hello! I'm a "}
-  ])
+  const route = useRoute();
+
+  const history = ref([])
+  const item = ref(null);
+
+  onMounted(async () => {
+
+    const appStore = useAppStore()
+    await appStore.loadItems()
+    item.value = appStore.items.find((i) => i.id === route.params.id);
+    if (item.value) {
+      history.value = [{ role: "ai", text: item.value.introduction || "Hello! I'm excited to chat with you about the Wadden Sea. Ask me anything!" }]
+    }
+
+  })
 
 
 </script>

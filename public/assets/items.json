@@ -2,16 +2,19 @@
   {
     "id": "seagrass",
     "title": "Seagrass",
+    "introduction": "Hi, I'm seagrass! I provide food and shelter for many marine animals. Ask me anything about my role in the ecosystem!",
     "img": "bg/seagrass.jpg"
   },
   {
     "id": "seal",
     "title": "Seal",
+    "introduction": "Hello, I'm a seal! I'm a top predator in the Wadden Sea and play a crucial role in maintaining the balance of the ecosystem. Feel free to ask me anything about my life and habits!",
     "img": "bg/seal.jpg"
   },
   {
     "id": "oyster",
     "title": "Oyster",
+    "placeholder": true,
     "img": "bg/oyster.jpg"
   },
   {
