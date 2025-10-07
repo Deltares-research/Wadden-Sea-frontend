@@ -18,7 +18,11 @@ export default defineConfig({
     VueRouter(),
     Layouts(),
     Vue({
-      template: { transformAssetUrls },
+      template: { transformAssetUrls,
+        compilerOptions: {
+          isCustomElement: tag => tag === 'deep-chat', // recognize <deep-chat> as a custom element
+        },
+       },
     }),
     // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
     Vuetify({

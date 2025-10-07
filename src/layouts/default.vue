@@ -6,5 +6,5 @@
 </template>
 
 <script setup>
-import AppTopBar from "@/components/AppTopBar.vue";
+  import AppTopBar from "@/components/AppTopBar.vue";
 </script>

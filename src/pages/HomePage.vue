@@ -1,7 +1,11 @@
 <template>
-  <div class="scene" :style="{ backgroundImage: `url('${bgUrl}')` }"></div>
+  <div class="scene" :style="{ backgroundImage: `url('${bgUrl}')` }" />
 
-  <v-item-group v-model="selected" class="gallery-overlay" mandatory>
+  <v-item-group
+    v-model="selected"
+    class="gallery-overlay"
+    mandatory
+  >
     <v-container class="py-12">
       <v-row>
         <v-col
@@ -13,15 +17,16 @@
           lg="3"
         >
           <v-item
+            v-slot="{ toggle }"
             :value="item.id"
             :disabled="!!item.placeholder"
-            v-slot="{ toggle }"
           >
             <div class="ring-wrap" :class="{ 'is-disabled': item.placeholder }">
               <v-card
                 elevation="8"
                 class="gallery-card"
                 :class="{ 'is-disabled': item.placeholder }"
+                :aria-disabled="item.placeholder ? 'true' : 'false'"
                 @click="
                   () => {
                     if (!item.placeholder) {
@@ -30,11 +35,16 @@
                     }
                   }
                 "
-                :aria-disabled="item.placeholder ? 'true' : 'false'"
               >
-                <v-img :src="item.img" height="180" cover>
+                <v-img
+                  :src="item.img"
+                  height="180"
+                  cover
+                >
                   <template #sources />
-                  <div class="card-title">{{ item.title }}</div>
+                  <div class="card-title">
+                    {{ item.title }}
+                  </div>
                 </v-img>
               </v-card>
             </div>
@@ -46,34 +56,35 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+  import { ref, onMounted } from "vue";
+  import { useRouter } from "vue-router";
+  import { useAppStore } from '@/stores/app'
 
-const router = useRouter();
+  const router = useRouter();
 
-const base = import.meta.env.BASE_URL;
-const bgUrl = base + "bg/waddensea.jpg";
-const assets = base + "assets/";
+  const base = import.meta.env.BASE_URL;
+  const bgUrl = base + "bg/waddensea.jpg";
 
-const items = ref([]);
-const selected = ref(null);
+  const items = ref([]);
+  const selected = ref(null);
 
-onMounted(async () => {
-  const res = await fetch(assets + "items.json");
-  const data = await res.json();
-  // Prepend BASE_URL to image paths
-  items.value = data.map((item) => ({
-    ...item,
-    img: base + item.img,
-  }));
-  // Select the first NON-placeholder item (so placeholders are never selected)
-  selected.value = items.value.find((i) => !i.placeholder)?.id ?? null;
-});
+  onMounted(async () => {
+    const appStore = useAppStore()
+    await appStore.loadItems()
+    const data = appStore.items;
+    // Prepend BASE_URL to image paths
+    items.value = data.map((item) => ({
+      ...item,
+      img: base + item.img,
+    }));
+    // Select the first NON-placeholder item (so placeholders are never selected)
+    selected.value = items.value.find((i) => !i.placeholder)?.id ?? null;
+  });
 
-function go(item) {
-  if (!item?.id || item.placeholder) return;
-  router.push(item.id);
-}
+  function go(item) {
+    if (!item?.id || item.placeholder) return;
+    router.push(item.id);
+  }
 </script>
 
 <style scoped>
