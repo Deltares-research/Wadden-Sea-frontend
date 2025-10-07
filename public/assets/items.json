@@ -13,5 +13,11 @@
     "id": "oyster",
     "title": "Oyster",
     "img": "bg/oyster.jpg"
+  },
+  {
+    "id": "shellfish_blur",
+    "title": "Coming next",
+    "placeholder": true,
+    "img": "bg/shellfish_blur.jpg"
   }
 ]
