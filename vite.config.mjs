@@ -80,12 +80,5 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://4.233.115.122',
-        changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, ''),
-      }
-    }
   },
 })
