@@ -9,7 +9,8 @@
     max-width: 1200px;
     max-height: 900px;
     pointer-events: auto;"
-    :demo="true"
+    :connect="{'handler': handler}"
+    :demo="false"
     :text-input="{ placeholder: { text: 'Welcome to the demo!' } }"
     :history="history"
   />
@@ -34,8 +35,24 @@
     if (item.value) {
       history.value = [{ role: "ai", text: item.value.introduction || "Hello! I'm excited to chat with you about the Wadden Sea. Ask me anything!" }]
     }
-
   })
+
+  function handler(body, signals) {
+    const message = body.messages[body.messages.length - 1];
+    try {
+      fetch("/api/query",{
+        method: "POST",
+        headers : {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({query: message.text})}
+      ).then(response => response.json())
+        .then(data => {
+          signals.onResponse({role:"ai", text: data.answer }) });
+    } catch (e) {
+      console.error("Error in handler:", e);
+    }
+  }
 
 
 </script>
