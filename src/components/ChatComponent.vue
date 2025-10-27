@@ -1,18 +1,18 @@
 <template>
   <deep-chat
-    style=" border-radius: 8px;
-    background-color: #f7f7f7;
-    opacity: 0.85;
-    border-radius: 8px;    
-    width: 600px;
-    height: 600px;
-    max-width: 1200px;
-    max-height: 900px;
-    pointer-events: auto;"
     :connect="{'handler': handler}"
     :demo="false"
-    :text-input="{ placeholder: { text: 'Welcome to the demo!' } }"
+    style="
+      border-radius: 8px;
+      background-color: rgba(247, 247, 247, 0.3);
+      width: 600px;
+      height: 600px;
+      max-width: 1200px;
+      max-height: 900px;
+      pointer-events: auto;
+    "
     :history="history"
+    :message-styles="messageStyles"
   />
 </template>
 
