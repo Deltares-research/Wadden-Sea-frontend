@@ -26,6 +26,16 @@
 
   const history = ref([])
   const item = ref(null);
+  
+  const messageStyles = {
+    default: {
+      shared: {
+        bubble: {
+          fontSize: "18px",
+        },
+      },
+    },
+  };
 
   onMounted(async () => {
 
