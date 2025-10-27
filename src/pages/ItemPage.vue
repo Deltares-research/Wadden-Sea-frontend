@@ -76,9 +76,6 @@ onMounted(async () => {
   bottom: 50px;
   left: 50px;
   z-index: 10;
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  padding: 16px;
   pointer-events: auto;
 }
 
@@ -87,6 +84,9 @@ onMounted(async () => {
   color: white !important;
   width: 70px !important;
   height: 70px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.3) !important;
 }
 
 .back-icon {
@@ -95,5 +95,8 @@ onMounted(async () => {
 
 .back-button:hover {
   background-color: #646bc5 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 6px 12px rgba(0, 0, 0, 0.6),
+    0 4px 8px rgba(0, 0, 0, 0.4) !important;
+  transform: translateY(-2px);
 }
 </style>
