@@ -1,12 +1,12 @@
 <template>
   <div class="scene" :style="{ backgroundImage: `url('${bgUrl}')` }" />
 
-  <v-item-group
-    v-model="selected"
-    class="gallery-overlay"
-    mandatory
-  >
-    <v-container class="py-12">
+  <div class="title-band">
+    <div class="page-title">Voice for Nature – Wadden Sea</div>
+  </div>
+
+  <v-item-group v-model="selected" class="gallery-overlay" mandatory>
+    <v-container class="pb-12" style="padding-top: 300px">
       <v-row>
         <v-col
           v-for="item in items"
@@ -36,11 +36,7 @@
                   }
                 "
               >
-                <v-img
-                  :src="item.img"
-                  height="180"
-                  cover
-                >
+                <v-img :src="item.img" height="180" cover>
                   <template #sources />
                   <div class="card-title">
                     {{ item.title }}
@@ -56,38 +52,45 @@
 </template>
 
 <script setup>
-  import { ref, onMounted } from "vue";
-  import { useRouter } from "vue-router";
-  import { useAppStore } from '@/stores/app'
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useAppStore } from "@/stores/app";
 
-  const router = useRouter();
+const router = useRouter();
 
-  const base = import.meta.env.BASE_URL;
-  const bgUrl = base + "bg/waddensea.jpg";
+const base = import.meta.env.BASE_URL;
+const bgUrl = base + "bg/waddensea.jpg";
 
-  const items = ref([]);
-  const selected = ref(null);
+const items = ref([]);
+const selected = ref(null);
 
-  onMounted(async () => {
-    const appStore = useAppStore()
-    await appStore.loadItems()
-    const data = appStore.items;
-    // Prepend BASE_URL to image paths
-    items.value = data.map((item) => ({
-      ...item,
-      img: base + item.img,
-    }));
-    // Select the first NON-placeholder item (so placeholders are never selected)
-    selected.value = items.value.find((i) => !i.placeholder)?.id ?? null;
-  });
+onMounted(async () => {
+  const appStore = useAppStore();
+  await appStore.loadItems();
+  const data = appStore.items;
+  // Prepend BASE_URL to image paths
+  items.value = data.map((item) => ({
+    ...item,
+    img: base + item.img,
+  }));
+  // Select the first NON-placeholder item (so placeholders are never selected)
+  selected.value = items.value.find((i) => !i.placeholder)?.id ?? null;
+});
 
-  function go(item) {
-    if (!item?.id || item.placeholder) return;
-    router.push(item.id);
-  }
+function go(item) {
+  if (!item?.id || item.placeholder) return;
+  router.push(item.id);
+}
 </script>
 
 <style scoped>
+@font-face {
+  font-family: "Chapaza";
+  src: url("/font/chapaza/Chapaza Italic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: normal;
+}
+
 .scene {
   position: fixed;
   top: 0;
@@ -97,6 +100,38 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.title-band {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  margin-top: 40px;
+  padding: 8px 0 10px 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.4) 20%,
+    rgba(0, 0, 0, 0.8) 50%,
+    rgba(0, 0, 0, 0.4) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+}
+
+.page-title {
+  position: relative;
+  text-align: center;
+  color: #c8a389;
+  font-family: "Chapaza", serif;
+  font-style: italic;
+  font-size: 56px;
+  font-weight: normal;
+  padding: 20px 0;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
 }
 
 .gallery-overlay {
