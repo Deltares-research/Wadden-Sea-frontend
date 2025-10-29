@@ -21,30 +21,30 @@
 </template>
 
 <script setup>
-import ChatComponent from "@/components/ChatComponent.vue";
-import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
-import { useAppStore } from "@/stores/app";
+  import ChatComponent from "@/components/ChatComponent.vue";
+  import { ref, onMounted } from "vue";
+  import { useRoute } from "vue-router";
+  import { useAppStore } from "@/stores/app";
 
-defineProps({
-  id: {
-    type: String,
-    required: true,
-  },
-});
+  defineProps({
+    id: {
+      type: String,
+      required: true,
+    },
+  });
 
-const route = useRoute();
-const item = ref(null);
-const bgUrl = ref("");
+  const route = useRoute();
+  const item = ref(null);
+  const bgUrl = ref("");
 
-onMounted(async () => {
-  const appStore = useAppStore();
-  await appStore.loadItems();
-  item.value = appStore.items.find((i) => i.id === route.params.id);
-  if (item.value) {
-    bgUrl.value = import.meta.env.BASE_URL + item.value.img;
-  }
-});
+  onMounted(async () => {
+    const appStore = useAppStore();
+    await appStore.loadItems();
+    item.value = appStore.items.find((i) => i.id === route.params.id);
+    if (item.value) {
+      bgUrl.value = import.meta.env.BASE_URL + item.value.img;
+    }
+  });
 </script>
 
 <style scoped>
