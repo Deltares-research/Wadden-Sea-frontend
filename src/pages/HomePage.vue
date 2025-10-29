@@ -16,7 +16,7 @@
         'shape-rectangular': getItemShape(item) === 'rectangular',
         'shape-circular': getItemShape(item) === 'circular',
       }"
-      :style="getItemPosition(item)"
+      :style="{ ...getItemPosition(item), ...getItemSize(item) }"
       @click="handleItemClick(item)"
     >
       <div
@@ -39,7 +39,7 @@
         >
           <v-img
             :src="item.img"
-            :height="getItemShape(item) === 'circular' ? 280 : 180"
+            :height="getItemImageHeight(item)"
             cover
           >
             <template #sources />
@@ -77,6 +77,8 @@ onMounted(async () => {
     position: item.position || { x: 50, y: 50 },
     // Default shape to rectangular if not specified
     shape: item.shape || "rectangular",
+    // Default size if not specified (uses default dimensions)
+    size: item.size || null,
   }));
 });
 
@@ -95,6 +97,75 @@ function getItemPosition(item) {
 
 function getItemShape(item) {
   return item.shape || "rectangular";
+}
+
+/**
+ * Calculate size for an item based on its size data
+ * Size can be:
+ * - A number: width for rectangular, width/height for circular
+ * - An object: { width: number, height?: number }
+ * If not specified, uses default sizes
+ */
+function getItemSize(item) {
+  const shape = getItemShape(item);
+  const size = item.size;
+
+  if (!size) {
+    // Default sizes
+    if (shape === "circular") {
+      return { width: "280px", height: "280px" };
+    }
+    return { width: "280px" }; // Rectangular uses fixed height from CSS
+  }
+
+  // If size is a number
+  if (typeof size === "number") {
+    if (shape === "circular") {
+      return {
+        width: `${size}px`,
+        height: `${size}px`,
+      };
+    }
+    return { width: `${size}px` }; // Rectangular: only width, height stays proportional
+  }
+
+  // If size is an object
+  if (typeof size === "object") {
+    const styles = { width: `${size.width}px` };
+    if (shape === "circular") {
+      // For circular, use height if provided, otherwise use width for square
+      styles.height = size.height ? `${size.height}px` : `${size.width}px`;
+    } else if (size.height) {
+      // For rectangular, allow custom height
+      styles.height = `${size.height}px`;
+    }
+    return styles;
+  }
+
+  return {};
+}
+
+/**
+ * Get image height based on item shape and size
+ */
+function getItemImageHeight(item) {
+  const shape = getItemShape(item);
+  const size = item.size;
+
+  if (shape === "circular") {
+    if (!size) return 280; // Default
+    if (typeof size === "number") return size;
+    if (typeof size === "object") return size.height || size.width || 280;
+  }
+
+  // Rectangular
+  if (!size) return 180; // Default height for rectangular
+  if (typeof size === "object" && size.height) return size.height;
+  // For rectangular, maintain aspect ratio: height = (width / default_width) * default_height
+  if (typeof size === "number") {
+    return Math.round((size / 280) * 180);
+  }
+  return 180;
 }
 
 function handleItemClick(item) {
@@ -178,7 +249,7 @@ function handleItemClick(item) {
 
 .ecosystem-item {
   position: absolute;
-  width: 280px;
+  width: 280px; /* Default, can be overridden by inline style */
   pointer-events: auto;
   cursor: pointer;
   transition: transform 0.18s ease;
@@ -186,8 +257,8 @@ function handleItemClick(item) {
 
 /* Circular items need square containers */
 .ecosystem-item.shape-circular {
-  width: 280px;
-  height: 280px;
+  width: 280px; /* Default, can be overridden by inline style */
+  height: 280px; /* Default, can be overridden by inline style */
 }
 
 @media (max-width: 960px) {
@@ -258,9 +329,9 @@ function handleItemClick(item) {
 .gallery-card.shape-circular {
   border-radius: 50% !important;
   aspect-ratio: 1 / 1;
-  width: 280px !important;
-  height: 280px !important;
-  min-height: 280px;
+  width: 100% !important; /* Fill parent container */
+  height: 100% !important; /* Fill parent container */
+  min-height: 0;
   overflow: hidden !important;
   background: transparent !important;
   padding: 0 !important;
@@ -290,33 +361,11 @@ function handleItemClick(item) {
 
 .ring-wrap.shape-circular {
   border-radius: 50%;
-  width: 280px;
+  width: 100%; /* Use 100% to fill parent container */
   aspect-ratio: 1 / 1;
 }
 
-@media (max-width: 960px) {
-  .gallery-card.shape-circular {
-    width: 240px !important;
-    height: 240px !important;
-    min-height: 240px;
-  }
 
-  .ring-wrap.shape-circular {
-    width: 240px;
-  }
-}
-
-@media (max-width: 600px) {
-  .gallery-card.shape-circular {
-    width: 200px !important;
-    height: 200px !important;
-    min-height: 200px;
-  }
-
-  .ring-wrap.shape-circular {
-    width: 200px;
-  }
-}
 
 .gallery-card :deep(.v-img) {
   border-radius: 12px;
