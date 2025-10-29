@@ -5,8 +5,8 @@
     "introduction": "Hi, I'm seagrass! I provide food and shelter for many marine animals. Ask me anything about my role in the ecosystem!",
     "img": "bg/seagrass.jpg",
     "position": {
-      "x": 20,
-      "y": 60
+      "x": 25,
+      "y": 73
     }
   },
   {
@@ -16,8 +16,8 @@
     "placeholder": false,
     "img": "bg/shellfish.jpg",
     "position": {
-      "x": 80,
-      "y": 50
+      "x": 70,
+      "y": 88
     }
   },
   {
@@ -27,8 +27,8 @@
     "img": "bg/seal.jpg",
     "placeholder": true,
     "position": {
-      "x": 50,
-      "y": 30
+      "x": 10,
+      "y": 50
     }
   },
   {
@@ -37,8 +37,8 @@
     "placeholder": true,
     "img": "bg/oyster.jpg",
     "position": {
-      "x": 70,
-      "y": 75
+      "x": 45,
+      "y": 42
     }
   }
 ]
