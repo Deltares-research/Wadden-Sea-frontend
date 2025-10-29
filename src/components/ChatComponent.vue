@@ -12,7 +12,7 @@
       pointer-events: auto;
     "
     :history="history"
-    :messageStyles="messageStyles"
+    :message-styles="messageStyles"
   />
 </template>
 
@@ -62,7 +62,7 @@
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ query: message.text }),
+        body: JSON.stringify({ query: message.text , entity: "seagrass"}),
       })
         .then((response) => response.json())
         .then((data) => {

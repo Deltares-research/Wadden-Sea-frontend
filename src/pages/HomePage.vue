@@ -2,8 +2,12 @@
   <div class="scene" :style="{ backgroundImage: `url('${bgUrl}')` }" />
 
   <div class="title-band">
-    <div class="page-title">Voice for Nature – Wadden Sea</div>
-    <div class="page-subtitle">Interact with the environment</div>
+    <div class="page-title">
+      Voice for Nature – Wadden Sea
+    </div>
+    <div class="page-subtitle">
+      Interact with the environment
+    </div>
   </div>
 
   <div class="ecosystem-overlay">
@@ -54,124 +58,124 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import { useAppStore } from "@/stores/app";
+  import { ref, onMounted } from "vue";
+  import { useRouter } from "vue-router";
+  import { useAppStore } from "@/stores/app";
 
-const router = useRouter();
+  const router = useRouter();
 
-const base = import.meta.env.BASE_URL;
-const bgUrl = base + "bg/waddensea.jpg";
+  const base = import.meta.env.BASE_URL;
+  const bgUrl = base + "bg/waddensea.jpg";
 
-const items = ref([]);
+  const items = ref([]);
 
-onMounted(async () => {
-  const appStore = useAppStore();
-  await appStore.loadItems();
-  const data = appStore.items;
-  // Prepend BASE_URL to image paths and ensure position data
-  items.value = data.map((item) => ({
-    ...item,
-    img: base + item.img,
-    // Default positions if not specified (for backwards compatibility)
-    position: item.position || { x: 50, y: 50 },
-    // Default shape to rectangular if not specified
-    shape: item.shape || "rectangular",
-    // Default size if not specified (uses default dimensions)
-    size: item.size || null,
-  }));
-});
+  onMounted(async () => {
+    const appStore = useAppStore();
+    await appStore.loadItems();
+    const data = appStore.items;
+    // Prepend BASE_URL to image paths and ensure position data
+    items.value = data.map((item) => ({
+      ...item,
+      img: base + item.img,
+      // Default positions if not specified (for backwards compatibility)
+      position: item.position || { x: 50, y: 50 },
+      // Default shape to rectangular if not specified
+      shape: item.shape || "rectangular",
+      // Default size if not specified (uses default dimensions)
+      size: item.size || null,
+    }));
+  });
 
-/**
- * Calculate responsive position for an item based on its position data
- * Position values are percentages (0-100) relative to container
- */
-function getItemPosition(item) {
-  const position = item.position || { x: 50, y: 50 };
-  return {
-    left: `${position.x}%`,
-    top: `${position.y}%`,
-    transform: "translate(-50%, -50%)", // Center the item on its position point
-  };
-}
+  /**
+   * Calculate responsive position for an item based on its position data
+   * Position values are percentages (0-100) relative to container
+   */
+  function getItemPosition(item) {
+    const position = item.position || { x: 50, y: 50 };
+    return {
+      left: `${position.x}%`,
+      top: `${position.y}%`,
+      transform: "translate(-50%, -50%)", // Center the item on its position point
+    };
+  }
 
-function getItemShape(item) {
-  return item.shape || "rectangular";
-}
+  function getItemShape(item) {
+    return item.shape || "rectangular";
+  }
 
-/**
- * Calculate size for an item based on its size data
- * Size can be:
- * - A number: width for rectangular, width/height for circular
- * - An object: { width: number, height?: number }
- * If not specified, uses default sizes
- */
-function getItemSize(item) {
-  const shape = getItemShape(item);
-  const size = item.size;
+  /**
+   * Calculate size for an item based on its size data
+   * Size can be:
+   * - A number: width for rectangular, width/height for circular
+   * - An object: { width: number, height?: number }
+   * If not specified, uses default sizes
+   */
+  function getItemSize(item) {
+    const shape = getItemShape(item);
+    const size = item.size;
 
-  if (!size) {
-    // Default sizes
-    if (shape === "circular") {
-      return { width: "280px", height: "280px" };
+    if (!size) {
+      // Default sizes
+      if (shape === "circular") {
+        return { width: "280px", height: "280px" };
+      }
+      return { width: "280px" }; // Rectangular uses fixed height from CSS
     }
-    return { width: "280px" }; // Rectangular uses fixed height from CSS
-  }
 
-  // If size is a number
-  if (typeof size === "number") {
-    if (shape === "circular") {
-      return {
-        width: `${size}px`,
-        height: `${size}px`,
-      };
+    // If size is a number
+    if (typeof size === "number") {
+      if (shape === "circular") {
+        return {
+          width: `${size}px`,
+          height: `${size}px`,
+        };
+      }
+      return { width: `${size}px` }; // Rectangular: only width, height stays proportional
     }
-    return { width: `${size}px` }; // Rectangular: only width, height stays proportional
-  }
 
-  // If size is an object
-  if (typeof size === "object") {
-    const styles = { width: `${size.width}px` };
-    if (shape === "circular") {
-      // For circular, use height if provided, otherwise use width for square
-      styles.height = size.height ? `${size.height}px` : `${size.width}px`;
-    } else if (size.height) {
-      // For rectangular, allow custom height
-      styles.height = `${size.height}px`;
+    // If size is an object
+    if (typeof size === "object") {
+      const styles = { width: `${size.width}px` };
+      if (shape === "circular") {
+        // For circular, use height if provided, otherwise use width for square
+        styles.height = size.height ? `${size.height}px` : `${size.width}px`;
+      } else if (size.height) {
+        // For rectangular, allow custom height
+        styles.height = `${size.height}px`;
+      }
+      return styles;
     }
-    return styles;
+
+    return {};
   }
 
-  return {};
-}
+  /**
+   * Get image height based on item shape and size
+   */
+  function getItemImageHeight(item) {
+    const shape = getItemShape(item);
+    const size = item.size;
 
-/**
- * Get image height based on item shape and size
- */
-function getItemImageHeight(item) {
-  const shape = getItemShape(item);
-  const size = item.size;
+    if (shape === "circular") {
+      if (!size) return 280; // Default
+      if (typeof size === "number") return size;
+      if (typeof size === "object") return size.height || size.width || 280;
+    }
 
-  if (shape === "circular") {
-    if (!size) return 280; // Default
-    if (typeof size === "number") return size;
-    if (typeof size === "object") return size.height || size.width || 280;
+    // Rectangular
+    if (!size) return 180; // Default height for rectangular
+    if (typeof size === "object" && size.height) return size.height;
+    // For rectangular, maintain aspect ratio: height = (width / default_width) * default_height
+    if (typeof size === "number") {
+      return Math.round((size / 280) * 180);
+    }
+    return 180;
   }
 
-  // Rectangular
-  if (!size) return 180; // Default height for rectangular
-  if (typeof size === "object" && size.height) return size.height;
-  // For rectangular, maintain aspect ratio: height = (width / default_width) * default_height
-  if (typeof size === "number") {
-    return Math.round((size / 280) * 180);
+  function handleItemClick(item) {
+    if (!item?.id || item.placeholder) return;
+    router.push(item.id);
   }
-  return 180;
-}
-
-function handleItemClick(item) {
-  if (!item?.id || item.placeholder) return;
-  router.push(item.id);
-}
 </script>
 
 <style scoped>
