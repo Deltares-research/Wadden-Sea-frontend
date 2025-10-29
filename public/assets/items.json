@@ -3,26 +3,50 @@
     "id": "seagrass",
     "title": "Seagrass",
     "introduction": "Hi, I'm seagrass! I provide food and shelter for many marine animals. Ask me anything about my role in the ecosystem!",
-    "img": "bg/seagrass.jpg"
+    "placeholder": false,
+    "img": "bg/seagrass.jpg",
+    "position": {
+      "x": 30,
+      "y": 73
+    },
+    "shape": "rectangular",
+    "size": 320
   },
   {
     "id": "shellfish",
     "title": "Shellfish",
     "introduction": "Greetings! I'm a shellfish, an essential part of the Wadden Sea ecosystem. I help filter the water and provide food for many other creatures. Ask me anything about my life and role in the environment!",
     "placeholder": false,
-    "img": "bg/shellfish.jpg"
+    "img": "bg/shellfish.jpg",
+    "position": {
+      "x": 70,
+      "y": 88
+    },
+    "shape": "rectangular"
   },
   {
     "id": "seal",
     "title": "Coming next",
     "introduction": "Hello, I'm a seal! I'm a top predator in the Wadden Sea and play a crucial role in maintaining the balance of the ecosystem. Feel free to ask me anything about my life and habits!",
     "img": "bg/seal.jpg",
-    "placeholder": true
+    "placeholder": true,
+    "position": {
+      "x": 10,
+      "y": 50
+    },
+    "shape": "circular",
+    "size": 200
   },
   {
     "id": "oyster",
     "title": "Coming next",
     "placeholder": true,
-    "img": "bg/oyster.jpg"
+    "img": "bg/oyster.jpg",
+    "position": {
+      "x": 45,
+      "y": 42
+    },
+    "shape": "circular",
+    "size": 150
   }
 ]
