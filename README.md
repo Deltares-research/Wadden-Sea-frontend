@@ -1,79 +1,169 @@
-# Vuetify (Default)
+# Voice for Nature — Wadden (Frontend)
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
+A Vue 3 + Vuetify 3 single-page app (SPA) that lets users “meet” Wadden Sea ecosystem elements (e.g., seagrass) through full-bleed, image-driven pages. The current prototype focuses on a clean, scalable front-end with two layout “frames,” a gallery landing page, and per-element pages. AI/chat is now integrated via a web component.
 
-## ❗️ Important Links
+---
 
-- 📄 [Docs](https://vuetifyjs.com/)
-- 🚨 [Issues](https://issues.vuetifyjs.com/)
-- 🏬 [Store](https://store.vuetifyjs.com/)
-- 🎮 [Playground](https://play.vuetifyjs.com/)
-- 💬 [Discord](https://community.vuetifyjs.com)
+## Tech stack
 
-## 💿 Install
+* Vue 3 (Composition API, `<script setup>`)
+* Vuetify 3 (UI framework)
+* Vite (dev server & bundler)
+* Vue Router + file-based routes (`unplugin-vue-router`)
+* Layouts (`vite-plugin-vue-layouts`)
+* Pinia (state management, used for shared data like items)
+* [deep-chat](https://deepchat.dev/) (web component chat UI)
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
+---
 
-| Package Manager                                                | Command        |
-|---------------------------------------------------------------|----------------|
-| [yarn](https://yarnpkg.com/getting-started)                   | `yarn install` |
-| [npm](https://docs.npmjs.com/cli/v7/commands/npm-install)     | `npm install`  |
-| [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
-| [bun](https://bun.sh/#getting-started)                        | `bun install`  |
-
-After completing the installation, your environment is ready for Vuetify development.
-
-## ✨ Features
-
-- 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
-- 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
-- 🚦 **Routing and Layouts**: Utilizes Vue Router for SPA navigation and vite-plugin-vue-layouts for organizing Vue file layouts. [Vue Router](https://router.vuejs.org/) | [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
-- ⚡ **Next-Gen Tooling**: Powered by Vite, experience fast cold starts and instant HMR (Hot Module Replacement). [Vite](https://vitejs.dev/)
-- 🧩 **Automated Component Importing**: Streamline your workflow with unplugin-vue-components, automatically importing components as you use them. [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
-
-These features are curated to provide a seamless development experience from setup to deployment, ensuring that your Vuetify application is both powerful and maintainable.
-
-## 💡 Usage
-
-This section covers how to start the development server and build your project for production.
-
-### Starting the Development Server
-
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
+## Quick start
 
 ```bash
-yarn dev
+# install deps
+npm install
+
+# run dev server (Vite will print the local URL)
+npm run dev
+
+# production build
+npm run build
+
+# preview built app locally
+npm run preview
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+---
 
-> Add NODE_OPTIONS='--no-warnings' to suppress the JSON import warnings that happen as part of the Vuetify import mapping. If you are on Node [v21.3.0](https://nodejs.org/en/blog/release/v21.3.0) or higher, you can change this to NODE_OPTIONS='--disable-warning=5401'. If you don't mind the warning, you can remove this from your package.json dev script.
+## Project structure
 
-### Building for Production
-
-To build your project for production, use:
-
-```bash
-yarn build
+```
+project/
+├─ public/
+│  ├─ bg/                    # full-bleed background images (served as /bg/…)
+│  └─ assets/
+│     └─ items.json          # ecosystem items data (id, title, image, etc.)
+├─ src/
+│  ├─ App.vue                # single <v-app> + <router-view/>
+│  ├─ main.js                # boot, plugins, mount (registers deep-chat as custom element)
+│  ├─ plugins/
+│  │  ├─ index.js            # registers router, pinia, vuetify
+│  │  └─ vuetify.js          # Vuetify setup (theme/components)
+│  ├─ router/
+│  │  └─ index.js            # createRouter + file-based routes + layouts
+│  ├─ layouts/
+│  │  ├─ default.vue         # app-bar layout (top bar)
+│  │  └─ FullBleedLayout.vue # chrome-less layout (edge-to-edge content)
+│  ├─ components/
+│  │  ├─ AppTopBar.vue       # simple app bar with a Home/Gallery button
+│  │  └─ ChatComponent.vue   # wrapper for deep-chat web component
+│  ├─ pages/
+│  │  ├─ HomePage.vue        # landing "gallery" over WaddenSea background
+│  │  └─ ItemPage.vue        # per-ecosystem page (dynamic route)
+│  ├─ stores/                # Pinia stores (app store loads items.json)
+│  └─ styles/                # (optional) global styles, if needed
+└─ README.md
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+---
 
-Once the build process is completed, your application will be ready for deployment in a production environment.
+## How routing & layouts work
 
-## 💪 Support Vuetify Development
+This project uses **file-based routing** and **automatic layouts** :
 
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
+* Routes are generated from `src/pages/*.vue` by `unplugin-vue-router`.
+* Dynamic ecosystem pages are handled by `ItemPage.vue` and a dynamic route (`/item/:id`).
+* Layouts are ordinary Vue components in `src/layouts/`. The layouts plugin wraps pages automatically, and **the layout component must render `<RouterView/>`** in its template to show the page.
 
-- [Requesting Enterprise Support](https://support.vuetifyjs.com/)
-- [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
-- [Sponsoring Kael on Github](https://github.com/users/kaelwd/sponsorship)
-- [Supporting the team on Open Collective](https://opencollective.com/vuetify)
-- [Becoming a sponsor on Patreon](https://www.patreon.com/vuetify)
-- [Becoming a subscriber on Tidelift](https://tidelift.com/subscription/npm/vuetify)
-- [Making a one-time donation with Paypal](https://paypal.me/vuetify)
+**App-level rule:** there must be exactly **one** `<v-app>` (Vuetify root) in the app, provided by `src/App.vue`. Layouts must *not* include `<v-app>`.
 
-## 📑 License
-[MIT](http://opensource.org/licenses/MIT)
+---
 
-Copyright (c) 2016-present Vuetify, LLC
+## Data management
+
+* **Ecosystem items** (id, title, image, etc.) are stored in `public/assets/items.json`.
+* The `app` Pinia store (`src/stores/app.js`) loads `items.json` once and exposes it to all components.
+* Components access items via the store, e.g.:
+  ```js
+  import { useAppStore } from '@/stores/app'
+  const appStore = useAppStore()
+  await appStore.loadItems()
+  // use appStore.items
+  ```
+
+---
+
+## Chat integration
+
+* The chat UI uses the [deep-chat](https://deepchat.dev/) web component, wrapped in `ChatComponent.vue`.
+* The chat window is centered and sized responsively using viewport units and CSS.
+* The chat background is semi-transparent so the ecosystem background image is visible.
+* Vue is configured to recognize `<deep-chat>` as a custom element (see `main.js` and/or `vite.config.mjs`).
+
+---
+
+## Current pages & layouts
+
+### 1) `pages/HomePage.vue` — Landing “Gallery”
+
+* **Layout:** `FullBleedLayout` (edge-to-edge canvas, no top bar).
+* **Background:** `public/bg/waddensea.jpg`
+* **Content:** a gallery overlay (`<v-item-group>`) of tiles, each representing an ecosystem item from `items.json`. Clicking a tile navigates to the corresponding `/item/:id` page.
+
+### 2) `pages/ItemPage.vue` — Ecosystem page (Dynamic)
+
+* **Layout:** `default` (top bar visible).
+* **Background:** per-item, loaded from `items.json` (e.g., `public/bg/seagrass.jpg`).
+* **Content:** centered chat window (`deep-chat`), with introduction/history loaded from the item data.
+
+---
+
+## Adding a new ecosystem item
+
+1. **Add background + preview** to `public/bg/` (e.g., `shellfish.jpg`).
+2. **Add an entry** to `public/assets/items.json`:
+   ```json
+   {
+     "id": "shellfish",
+     "title": "Shellfish",
+     "img": "bg/shellfish.jpg",
+     "introduction": "Hello! I'm a shellfish. Ask me anything!"
+   }
+   ```
+3. **No need to create a new page file** — the dynamic route `/item/:id` handled by `ItemPage.vue` will automatically display the new item.
+
+---
+
+## Conventions & guidelines
+
+* **One `<v-app>`** : only in `App.vue`. Layouts must not nest another `<v-app>`.
+* **Layouts** : must render `<RouterView/>` to display the wrapped page.
+* **Pages** : use `definePage({ name, path?, meta: { layout } })`.
+* **Styling** : prefer `scoped` styles; share small utilities via a global stylesheet if needed.
+* **Assets** :
+  * Backgrounds & large, static images → `public/bg/` then use `import.meta.env.BASE_URL + 'bg/...'`.
+  * Data (items) → `public/assets/items.json`, loaded via the Pinia store.
+* **Web components** : Register custom elements (like `deep-chat`) in `main.js` or `vite.config.mjs` so Vue doesn't warn.
+* **State** : Pinia is used for shared state (e.g., items).
+
+---
+
+## Dev notes & troubleshooting
+
+* **Hot reload & auto-routes** : The router is exposed to HMR in `router/index.js`.
+* **Dynamic import workaround** : The scaffold includes a reload path for transient “Failed to fetch dynamically imported module” issues during dev.
+* **First-load redirect** : The app currently shows a real home page (`/`).
+* **Sass** : Vuetify styles require Sass. If you ever see a request for raw `.sass` files in Network (e.g., `VApp.sass`), ensure `sass` is installed and Vuetify styles are imported once.
+
+---
+
+## Roadmap (suggested)
+
+* Add left/right navigation arrows on ecosystem pages (prev/next by index).
+* Add more chat features and AI integration.
+* Lazy-load background images; add small preview thumbs for faster first paint.
+
+---
+
+## License
+
+MIT (project code).

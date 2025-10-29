@@ -7,7 +7,24 @@
 import { setupLayouts } from 'virtual:generated-layouts'
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from 'vue-router/auto-routes'
+import HomePage from '@/pages/HomePage.vue'
+import ItemPage from '@/pages/ItemPage.vue'
+
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: HomePage,
+    meta: { layout: 'FullBleedLayout' },
+  },
+  {
+    path: '/:id',
+    name: 'item',
+    component: ItemPage,
+    props: true,
+    meta: { layout: 'default' },
+  },
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
