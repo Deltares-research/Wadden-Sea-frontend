@@ -1,5 +1,7 @@
 <template>
   <deep-chat
+    :connect="{ handler: handler }"
+    :demo="false"
     style="
       border-radius: 8px;
       background-color: rgba(247, 247, 247, 0.3);
@@ -9,8 +11,6 @@
       max-height: 900px;
       pointer-events: auto;
     "
-    :demo="true"
-    :text-input="{ placeholder: { text: 'Welcome to the demo!' } }"
     :history="history"
     :messageStyles="messageStyles"
   />
@@ -52,6 +52,25 @@ onMounted(async () => {
     ];
   }
 });
+
+function handler(body, signals) {
+  const message = body.messages[body.messages.length - 1];
+  try {
+    fetch("/api/query", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query: message.text }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        signals.onResponse({ role: "ai", text: data.answer });
+      });
+  } catch (e) {
+    console.error("Error in handler:", e);
+  }
+}
 </script>
 
 <style scoped></style>
