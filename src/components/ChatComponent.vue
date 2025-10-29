@@ -12,7 +12,7 @@
       pointer-events: auto;
     "
     :history="history"
-    :message-styles="messageStyles"
+    :messageStyles="messageStyles"
   />
 </template>
 
