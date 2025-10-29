@@ -6,50 +6,32 @@
     <div class="page-subtitle">Interact with the environment</div>
   </div>
 
-  <v-item-group v-model="selected" class="gallery-overlay" mandatory>
-    <v-container class="pb-12" style="padding-top: 300px">
-      <v-row>
-        <v-col
-          v-for="item in items"
-          :key="item.id"
-          cols="12"
-          sm="6"
-          md="4"
-          lg="3"
+  <div class="ecosystem-overlay">
+    <div
+      v-for="item in items"
+      :key="item.id"
+      class="ecosystem-item"
+      :class="{ 'is-disabled': item.placeholder }"
+      :style="getItemPosition(item)"
+      @click="handleItemClick(item)"
+    >
+      <div class="ring-wrap" :class="{ 'is-disabled': item.placeholder }">
+        <v-card
+          elevation="8"
+          class="gallery-card"
+          :class="{ 'is-disabled': item.placeholder }"
+          :aria-disabled="item.placeholder ? 'true' : 'false'"
         >
-          <v-item
-            v-slot="{ toggle }"
-            :value="item.id"
-            :disabled="!!item.placeholder"
-          >
-            <div class="ring-wrap" :class="{ 'is-disabled': item.placeholder }">
-              <v-card
-                elevation="8"
-                class="gallery-card"
-                :class="{ 'is-disabled': item.placeholder }"
-                :aria-disabled="item.placeholder ? 'true' : 'false'"
-                @click="
-                  () => {
-                    if (!item.placeholder) {
-                      toggle();
-                      go(item);
-                    }
-                  }
-                "
-              >
-                <v-img :src="item.img" height="180" cover>
-                  <template #sources />
-                  <div class="card-title">
-                    {{ item.title }}
-                  </div>
-                </v-img>
-              </v-card>
+          <v-img :src="item.img" height="180" cover>
+            <template #sources />
+            <div class="card-title">
+              {{ item.title }}
             </div>
-          </v-item>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-item-group>
+          </v-img>
+        </v-card>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -63,22 +45,34 @@ const base = import.meta.env.BASE_URL;
 const bgUrl = base + "bg/waddensea.jpg";
 
 const items = ref([]);
-const selected = ref(null);
 
 onMounted(async () => {
   const appStore = useAppStore();
   await appStore.loadItems();
   const data = appStore.items;
-  // Prepend BASE_URL to image paths
+  // Prepend BASE_URL to image paths and ensure position data
   items.value = data.map((item) => ({
     ...item,
     img: base + item.img,
+    // Default positions if not specified (for backwards compatibility)
+    position: item.position || { x: 50, y: 50 },
   }));
-  // Select the first NON-placeholder item (so placeholders are never selected)
-  selected.value = items.value.find((i) => !i.placeholder)?.id ?? null;
 });
 
-function go(item) {
+/**
+ * Calculate responsive position for an item based on its position data
+ * Position values are percentages (0-100) relative to container
+ */
+function getItemPosition(item) {
+  const position = item.position || { x: 50, y: 50 };
+  return {
+    left: `${position.x}%`,
+    top: `${position.y}%`,
+    transform: "translate(-50%, -50%)", // Center the item on its position point
+  };
+}
+
+function handleItemClick(item) {
   if (!item?.id || item.placeholder) return;
   router.push(item.id);
 }
@@ -147,12 +141,44 @@ function go(item) {
   text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
 }
 
-.gallery-overlay {
-  position: relative;
+.ecosystem-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1;
+  pointer-events: none;
+}
+
+.ecosystem-item {
+  position: absolute;
+  width: 280px;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+
+@media (max-width: 960px) {
+  .ecosystem-item {
+    width: 240px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ecosystem-item {
+    width: 200px;
+  }
+}
+
+.ecosystem-item.is-disabled {
+  pointer-events: none;
+  cursor: default;
 }
 
 .ring-wrap {
+  width: 100%;
+  display: inline-block;
   border-radius: 14px;
   box-shadow: 0 0 10px 16px rgba(0, 0, 0, 0.6), 0 12px 28px rgba(0, 0, 0, 0.35);
   transition: box-shadow 0.18s ease, transform 0.18s ease;
@@ -167,11 +193,23 @@ function go(item) {
 .gallery-card {
   border-radius: 12px;
   overflow: hidden;
+  width: 100% !important;
+  display: block !important;
+  min-height: 180px;
 }
 
 .gallery-card :deep(.v-img) {
   border-radius: 12px;
   overflow: hidden;
+  width: 100%;
+  height: 180px;
+  display: block;
+}
+
+.gallery-card :deep(.v-img__img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .card-title {
