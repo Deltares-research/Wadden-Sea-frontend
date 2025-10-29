@@ -55,6 +55,7 @@ export default [
       'vue/max-attributes-per-line': [ 'error', { singleline: 2 } ],
       'vue/no-unused-components': 'warn',
       'vue/no-v-html': 'off',
+      'vue/attribute-hyphenation': 'off',
     },
   },
 ]
