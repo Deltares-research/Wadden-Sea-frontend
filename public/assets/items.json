@@ -6,21 +6,23 @@
     "img": "bg/seagrass.jpg"
   },
   {
+    "id": "shellfish",
+    "title": "Shellfish",
+    "introduction": "Greetings! I'm a shellfish, an essential part of the Wadden Sea ecosystem. I help filter the water and provide food for many other creatures. Ask me anything about my life and role in the environment!",
+    "placeholder": false,
+    "img": "bg/shellfish.jpg"
+  },
+  {
     "id": "seal",
-    "title": "Seal",
+    "title": "Coming next",
     "introduction": "Hello, I'm a seal! I'm a top predator in the Wadden Sea and play a crucial role in maintaining the balance of the ecosystem. Feel free to ask me anything about my life and habits!",
-    "img": "bg/seal.jpg"
+    "img": "bg/seal.jpg",
+    "placeholder": true
   },
   {
     "id": "oyster",
     "title": "Coming next",
     "placeholder": true,
     "img": "bg/oyster.jpg"
-  },
-  {
-    "id": "shellfish_blur",
-    "title": "Coming next",
-    "placeholder": true,
-    "img": "bg/shellfish_blur.jpg"
   }
 ]
