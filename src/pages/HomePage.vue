@@ -3,6 +3,7 @@
 
   <div class="title-band">
     <div class="page-title">Voice for Nature – Wadden Sea</div>
+    <div class="page-subtitle">Interact with the environment</div>
   </div>
 
   <v-item-group v-model="selected" class="gallery-overlay" mandatory>
@@ -130,7 +131,19 @@ function go(item) {
   font-style: italic;
   font-size: 56px;
   font-weight: normal;
-  padding: 20px 0;
+  padding: 20px 0 0 0;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.page-subtitle {
+  position: relative;
+  text-align: center;
+  color: #c8a389;
+  font-family: "Chapaza", serif;
+  font-style: italic;
+  font-size: 32px;
+  font-weight: normal;
+  padding: 8px 0 20px 0;
   text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
 }
 
