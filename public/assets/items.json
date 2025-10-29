@@ -7,7 +7,8 @@
     "position": {
       "x": 25,
       "y": 73
-    }
+    },
+    "shape": "circular"
   },
   {
     "id": "shellfish",
@@ -18,7 +19,8 @@
     "position": {
       "x": 70,
       "y": 88
-    }
+    },
+    "shape": "rectangular"
   },
   {
     "id": "seal",
@@ -29,7 +31,8 @@
     "position": {
       "x": 10,
       "y": 50
-    }
+    },
+    "shape": "rectangular"
   },
   {
     "id": "oyster",
@@ -39,6 +42,7 @@
     "position": {
       "x": 45,
       "y": 42
-    }
+    },
+    "shape": "circular"
   }
 ]

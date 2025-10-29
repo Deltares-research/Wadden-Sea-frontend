@@ -11,18 +11,37 @@
       v-for="item in items"
       :key="item.id"
       class="ecosystem-item"
-      :class="{ 'is-disabled': item.placeholder }"
+      :class="{
+        'is-disabled': item.placeholder,
+        'shape-rectangular': getItemShape(item) === 'rectangular',
+        'shape-circular': getItemShape(item) === 'circular',
+      }"
       :style="getItemPosition(item)"
       @click="handleItemClick(item)"
     >
-      <div class="ring-wrap" :class="{ 'is-disabled': item.placeholder }">
+      <div
+        class="ring-wrap"
+        :class="{
+          'is-disabled': item.placeholder,
+          'shape-rectangular': getItemShape(item) === 'rectangular',
+          'shape-circular': getItemShape(item) === 'circular',
+        }"
+      >
         <v-card
           elevation="8"
           class="gallery-card"
-          :class="{ 'is-disabled': item.placeholder }"
+          :class="{
+            'is-disabled': item.placeholder,
+            'shape-rectangular': getItemShape(item) === 'rectangular',
+            'shape-circular': getItemShape(item) === 'circular',
+          }"
           :aria-disabled="item.placeholder ? 'true' : 'false'"
         >
-          <v-img :src="item.img" height="180" cover>
+          <v-img
+            :src="item.img"
+            :height="getItemShape(item) === 'circular' ? 280 : 180"
+            cover
+          >
             <template #sources />
             <div class="card-title">
               {{ item.title }}
@@ -56,6 +75,8 @@ onMounted(async () => {
     img: base + item.img,
     // Default positions if not specified (for backwards compatibility)
     position: item.position || { x: 50, y: 50 },
+    // Default shape to rectangular if not specified
+    shape: item.shape || "rectangular",
   }));
 });
 
@@ -70,6 +91,10 @@ function getItemPosition(item) {
     top: `${position.y}%`,
     transform: "translate(-50%, -50%)", // Center the item on its position point
   };
+}
+
+function getItemShape(item) {
+  return item.shape || "rectangular";
 }
 
 function handleItemClick(item) {
@@ -159,6 +184,26 @@ function handleItemClick(item) {
   transition: transform 0.18s ease;
 }
 
+/* Circular items need square containers */
+.ecosystem-item.shape-circular {
+  width: 280px;
+  height: 280px;
+}
+
+@media (max-width: 960px) {
+  .ecosystem-item.shape-circular {
+    width: 240px;
+    height: 240px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ecosystem-item.shape-circular {
+    width: 200px;
+    height: 200px;
+  }
+}
+
 @media (max-width: 960px) {
   .ecosystem-item {
     width: 240px;
@@ -196,6 +241,81 @@ function handleItemClick(item) {
   width: 100% !important;
   display: block !important;
   min-height: 180px;
+  aspect-ratio: auto;
+}
+
+/* Rectangular shape (default) */
+.gallery-card.shape-rectangular {
+  border-radius: 12px;
+  aspect-ratio: auto;
+}
+
+.gallery-card.shape-rectangular :deep(.v-img) {
+  border-radius: 12px;
+}
+
+/* Circular shape */
+.gallery-card.shape-circular {
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1;
+  width: 280px !important;
+  height: 280px !important;
+  min-height: 280px;
+  overflow: hidden !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.gallery-card.shape-circular :deep(.v-img) {
+  border-radius: 50% !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100%;
+  aspect-ratio: 1 / 1;
+  display: block;
+}
+
+.gallery-card.shape-circular :deep(.v-img__wrapper) {
+  border-radius: 50% !important;
+  overflow: hidden;
+  width: 100% !important;
+  height: 100% !important;
+  position: relative;
+}
+
+.gallery-card.shape-circular :deep(.v-card__media) {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.ring-wrap.shape-circular {
+  border-radius: 50%;
+  width: 280px;
+  aspect-ratio: 1 / 1;
+}
+
+@media (max-width: 960px) {
+  .gallery-card.shape-circular {
+    width: 240px !important;
+    height: 240px !important;
+    min-height: 240px;
+  }
+
+  .ring-wrap.shape-circular {
+    width: 240px;
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery-card.shape-circular {
+    width: 200px !important;
+    height: 200px !important;
+    min-height: 200px;
+  }
+
+  .ring-wrap.shape-circular {
+    width: 200px;
+  }
 }
 
 .gallery-card :deep(.v-img) {
@@ -212,6 +332,12 @@ function handleItemClick(item) {
   object-fit: cover;
 }
 
+.gallery-card.shape-circular :deep(.v-img__img) {
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
 .card-title {
   position: absolute;
   left: 0;
@@ -221,6 +347,14 @@ function handleItemClick(item) {
   font-weight: 600;
   color: white;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+  border-radius: 0 0 12px 12px;
+}
+
+/* Adjust card-title for circular shapes to follow the curve */
+.gallery-card.shape-circular .card-title {
+  border-radius: 0 0 50% 50%;
+  padding: 15px;
+  text-align: center;
 }
 
 .ring-wrap.is-disabled {
