@@ -63,6 +63,7 @@
   import { useAppStore } from "@/stores/app";
 
   const router = useRouter();
+  const appStore = useAppStore();
 
   const base = import.meta.env.BASE_URL;
   const bgUrl = base + "bg/waddensea.jpg";
@@ -70,7 +71,6 @@
   const items = ref([]);
 
   onMounted(async () => {
-    const appStore = useAppStore();
     await appStore.loadItems();
     const data = appStore.items;
     // Prepend BASE_URL to image paths and ensure position data
@@ -174,8 +174,22 @@
 
   function handleItemClick(item) {
     if (!item?.id || item.placeholder) return;
+    appStore.setEntity(item.id);
     router.push(item.id);
   }
+//TODO: 
+/*   // Watch for route changes and update entity accordingly
+  watch(
+    () => route,
+    (newRoute) => {
+      console.log('route.params.id:', newRoute);
+      if (newRoute.params.id) {
+        console.log('newRoute.params.id:', newRoute.params.id);
+        appStore.setEntity(newRoute.params.id);
+      }
+    },
+    { immediate: true }
+  ); */
 </script>
 
 <style scoped>

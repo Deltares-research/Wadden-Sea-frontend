@@ -23,6 +23,7 @@
   import "deep-chat";
 
   const route = useRoute();
+  const appStore = useAppStore();
 
   const history = ref([]);
   const item = ref(null);
@@ -39,7 +40,6 @@
   };
 
   onMounted(async () => {
-    const appStore = useAppStore();
     await appStore.loadItems();
     item.value = appStore.items.find((i) => i.id === route.params.id);
     if (item.value) {
@@ -62,7 +62,7 @@
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ query: message.text , entity: "seagrass"}),
+        body: JSON.stringify({ query: message.text , entity: appStore.entity}),
       })
         .then((response) => response.json())
         .then((data) => {
