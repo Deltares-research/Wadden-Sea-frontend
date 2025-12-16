@@ -1,10 +1,11 @@
 [
   {
     "id": "seagrass",
-    "title": "Seagrass",
-    "introduction": "Hi, I'm seagrass! I provide food and shelter for many marine animals. Ask me anything about my role in the ecosystem!",
+    "title": "Common Eelgrass",
+    "introduction": "I am *Zostera marina*, the common eelgrass of the Wadden Sea. I form underwater meadows that shelter many species — would you like to know more about me?",
     "placeholder": false,
     "img": "bg/seagrass.jpg",
+    "attribution": "Picture: Saxifraga-Ed Stikvoort",
     "position": {
       "x": 30,
       "y": 73
@@ -14,10 +15,11 @@
   },
   {
     "id": "shellfish",
-    "title": "Shellfish",
-    "introduction": "Greetings! I'm a shellfish, an essential part of the Wadden Sea ecosystem. I help filter the water and provide food for many other creatures. Ask me anything about my life and role in the environment!",
+    "title": "Common Cockle",
+    "introduction": "I am *Cerastoderma edule*, the common cockle. I live within the sand, feeding with the changing tides — would you like to understand more about my role in this environment? ",
     "placeholder": false,
     "img": "bg/shellfish.jpg",
+    "attribution": "Picture: Saxifraga-Eric Gibcus",
     "position": {
       "x": 70,
       "y": 88
@@ -26,10 +28,11 @@
   },
   {
     "id": "seal",
-    "title": "Coming next",
-    "introduction": "Hello, I'm a seal! I'm a top predator in the Wadden Sea and play a crucial role in maintaining the balance of the ecosystem. Feel free to ask me anything about my life and habits!",
+    "title": "Common Seal",
+    "introduction": "I am *Phoca vitulina*, the common seal. I move between water and land, following the tides — would you like to know more about how I live here?",
     "img": "bg/seal.jpg",
-    "placeholder": true,
+    "attribution": "Picture: Saxifraga-Bart Vastenhouw",
+    "placeholder": false,
     "position": {
       "x": 10,
       "y": 50
@@ -39,9 +42,11 @@
   },
   {
     "id": "oyster",
-    "title": "Coming next",
-    "placeholder": true,
+    "title": "Flat Oyster",
+    "introduction": "I am *Ostrea edulis*, the European flat oyster. I rest on the seafloor, filtering the water around me — would you like to hear how I contribute to the ecosystem?",
+    "placeholder": false,
     "img": "bg/oyster.jpg",
+    "attribution": "Picture: Saxifraga-Eric Gibcus",
     "position": {
       "x": 45,
       "y": 42

@@ -83,6 +83,8 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://4.233.115.122',
+        // target: 'http://4.233.115.122', FOR THE LIVE BACKEND
+        // target: 'http://127.0.0.1', FOR THE LOCAL BACKEND
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, ''),
       }
