@@ -3,6 +3,9 @@
   <div class="chat-container">
     <ChatComponent />
   </div>
+  <div v-if="item?.attribution" class="attribution-container">
+    <div class="attribution-text">{{ item.attribution }}</div>
+  </div>
   <div class="back-button-container">
     <v-tooltip location="top" text="Back to the Wadden Sea">
       <template #activator="{ props }">
@@ -98,5 +101,27 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 6px 12px rgba(0, 0, 0, 0.6),
     0 4px 8px rgba(0, 0, 0, 0.4) !important;
   transform: translateY(-2px);
+}
+
+.attribution-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.attribution-text {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 10px;
+  font-weight: 300;
+  padding: 6px 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.3px;
+  opacity: 0.85;
 }
 </style>
